@@ -15,7 +15,10 @@ cabal-version:       >=1.10
 
 library
   hs-source-dirs:      src
-  exposed-modules:     Lib
+  exposed-modules:     Buckwheat
+                     , Entity
+                     , Record
+                     , Snapshot
   build-depends:       base >= 4.7 && < 5
                      , text
   default-language:    Haskell2010
@@ -25,6 +28,7 @@ executable buckwheatjs-exe
   main-is:             Main.hs
   ghc-options:         -threaded -rtsopts -with-rtsopts=-N
   build-depends:       base
+                     , text
                      , buckwheatjs
   default-language:    Haskell2010
 

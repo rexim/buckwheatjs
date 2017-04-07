@@ -1,6 +1,7 @@
 module Main where
 
-import Lib
+import qualified Data.Text as T
+import Buckwheat
 
 main :: IO ()
-main = someFunc
+main = putStrLn $ show $ applyCommand emptyDatabase (AddEntity $ T.pack "Hello")

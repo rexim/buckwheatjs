@@ -3,13 +3,14 @@ module Buckwheat ( emptyDatabase
                  , loadDatabaseFromFile
                  , saveDatabaseToFile
                  , selectRecords
+                 , Command(AddEntity)
                  ) where
 
-import Data.List
 import qualified Data.Text as T
 
 import Entity
 import Record
+import Snapshot
 
 data Selector = EntityIs T.Text deriving Show
 
@@ -26,31 +27,10 @@ data Command = AddEntity T.Text
              | RemoveRecords Selector
                deriving Show
 
-data Snapshot = Snapshot { snapshotEntities :: [Entity]
-                         , snapshotRecords :: [Record]
-                         } deriving Show
-
-findEntity :: Snapshot -> T.Text -> Maybe Entity
-findEntity snapshot name = find ((==name) . entityName) entities
-    where entities = snapshotEntities snapshot
-
-addEntity :: Snapshot -> T.Text -> Either T.Text Snapshot
-addEntity snapshot entityName =
-    case findEntity snapshot entityName of
-      Just _ -> Left $ T.concat [ T.pack "Entity '"
-                                , entityName
-                                , T.pack "' already exists"
-                                ]
-      Nothing -> Right $ snapshot { snapshotEntities = entity entityName : entities }
-    where entities = snapshotEntities snapshot
-
 data Database = Database { databaseLog :: [Command]
                          , databaseSnapshot :: Snapshot
                          } deriving Show
 
-emptySnapshot = Snapshot { snapshotEntities = []
-                         , snapshotRecords = []
-                         }
 
 emptyDatabase :: Database
 emptyDatabase = Database { databaseLog = []
