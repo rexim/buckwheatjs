@@ -1,1 +1,3 @@
-# buckwheatjs
+# BuckwheatJS
+
+Buckwheat Journaling System
