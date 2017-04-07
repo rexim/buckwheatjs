@@ -12,6 +12,7 @@ import Entity
 import Record
 import Snapshot
 
+-- TODO(3a412eaf-9f87-489f-9dd2-e8b0c5c81a0d): move commands to Snapshot
 data Command = AddEntity T.Text
              | AddEntityField T.Text T.Text FieldType
 
@@ -38,6 +39,7 @@ performCommand database command transformSnapshot =
     where snapshot = databaseSnapshot database
           log = databaseLog database
 
+-- TODO(3a412eaf-9f87-489f-9dd2-e8b0c5c81a0d): move command dispatching to Snapshot
 applyCommand :: Database -> Command -> Either T.Text Database
 applyCommand database command@(AddEntity name) =
     performCommand database command (addEntity name)
