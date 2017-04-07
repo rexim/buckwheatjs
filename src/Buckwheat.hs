@@ -37,17 +37,18 @@ emptyDatabase = Database { databaseLog = []
                          , databaseSnapshot = emptySnapshot
                          }
 
--- TODO(5f2e0285-6ebc-4687-94f4-288222cb57ac): implement all the commands
-applyCommand :: Database -> Command -> Either T.Text Database
-
-applyCommand database command@(AddEntity name) =
-    do nextSnapshot <- addEntity name snapshot
+performCommand :: Database -> Command -> (Snapshot -> Either T.Text Snapshot) -> Either T.Text Database
+performCommand database command transformSnapshot =
+    do nextSnapshot <- transformSnapshot snapshot
        return $ database { databaseLog = command:log
                          , databaseSnapshot = nextSnapshot
                          }
     where snapshot = databaseSnapshot database
           log = databaseLog database
 
+-- TODO(5f2e0285-6ebc-4687-94f4-288222cb57ac): implement all the commands
+applyCommand :: Database -> Command -> Either T.Text Database
+applyCommand database command@(AddEntity name) = performCommand database command (addEntity name)
 applyCommand database _ = Left $ T.pack "Unimplemented command applied"
 
 -- TODO(13b72fe4-dec4-48b8-ac4c-34d978450ae1): implement loadDatabaseFromFile
