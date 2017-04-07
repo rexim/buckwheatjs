@@ -43,4 +43,4 @@ test-suite buckwheatjs-test
 
 source-repository head
   type:     git
-  location: https://github.com/githubuser/buckwheatjs
+  location: https://github.com/rexim/buckwheatjs
