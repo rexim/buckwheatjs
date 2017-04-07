@@ -8,26 +8,7 @@ module Buckwheat ( emptyDatabase
 import Data.List
 import qualified Data.Text as T
 
--- TODO(b1e870ef-f947-4ac5-827d-426c80b8d67a): extract entity related
--- stuff to Entity module
---
--- This includes:
--- - Entity
--- - EntityField
--- - FieldType
--- - entity
-data Entity = Entity { entityName :: T.Text
-                     , entityFields :: [EntityField]
-                     } deriving Show
-
-data EntityField = EntityField { entityFieldName :: T.Text
-                               , entityFieldType :: FieldType
-                               } deriving Show
-
-data FieldType = IntField
-               | StringField
-               | RefField T.Text
-                 deriving Show
+import Entity
 
 -- TODO(0083f2aa-8591-4a06-b7da-53dc82ee3b7a): extract record related
 -- stuff to Record module
@@ -70,11 +51,6 @@ data Command = AddEntity T.Text
 data Snapshot = Snapshot { snapshotEntities :: [Entity]
                          , snapshotRecords :: [Record]
                          } deriving Show
-
-entity :: T.Text -> Entity
-entity name = Entity { entityName = name
-                     , entityFields = []
-                     }
 
 findEntity :: Snapshot -> T.Text -> Maybe Entity
 findEntity snapshot name = find ((==name) . entityName) entities
