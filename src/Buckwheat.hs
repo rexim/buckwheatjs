@@ -9,29 +9,7 @@ import Data.List
 import qualified Data.Text as T
 
 import Entity
-
--- TODO(0083f2aa-8591-4a06-b7da-53dc82ee3b7a): extract record related
--- stuff to Record module
---
--- This includes:
--- - Record
--- - Field
--- - FieldValue
---
--- Record module will depend on Entity module.
-data Record = Record { id :: T.Text
-                     , recordEntityName :: T.Text
-                     , recordFields :: [Field]
-                     } deriving Show
-
-data Field = Field { fieldName :: T.Text
-                   , fieldValue :: FieldValue
-                   } deriving Show
-
-data FieldValue = IntFieldValue Int
-                | StringFieldValue T.Text
-                | RefFieldValue T.Text
-                  deriving Show
+import Record
 
 data Selector = EntityIs T.Text deriving Show
 
