@@ -40,8 +40,8 @@ emptyDatabase = Database { databaseLog = []
 -- TODO(5f2e0285-6ebc-4687-94f4-288222cb57ac): implement all the commands
 applyCommand :: Database -> Command -> Either T.Text Database
 
-applyCommand database command@(AddEntity entityName) =
-    do nextSnapshot <- addEntity snapshot entityName
+applyCommand database command@(AddEntity name) =
+    do nextSnapshot <- addEntity name snapshot
        return $ database { databaseLog = command:log
                          , databaseSnapshot = nextSnapshot
                          }

@@ -18,16 +18,16 @@ emptySnapshot = Snapshot { snapshotEntities = []
                          , snapshotRecords = []
                          }
 
-findEntity :: Snapshot -> T.Text -> Maybe Entity
-findEntity snapshot name = find ((==name) . entityName) entities
+findEntity :: T.Text -> Snapshot -> Maybe Entity
+findEntity name snapshot = find ((==name) . entityName) entities
     where entities = snapshotEntities snapshot
 
-addEntity :: Snapshot -> T.Text -> Either T.Text Snapshot
-addEntity snapshot entityName =
-    case findEntity snapshot entityName of
+addEntity :: T.Text -> Snapshot -> Either T.Text Snapshot
+addEntity name snapshot =
+    case findEntity name snapshot of
       Just _ -> Left $ T.concat [ T.pack "Entity '"
-                                , entityName
+                                , name
                                 , T.pack "' already exists"
                                 ]
-      Nothing -> Right $ snapshot { snapshotEntities = entity entityName : entities }
+      Nothing -> Right $ snapshot { snapshotEntities = entity name : entities }
     where entities = snapshotEntities snapshot
