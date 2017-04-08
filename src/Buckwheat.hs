@@ -12,7 +12,13 @@ import Entity
 import Record
 import Snapshot
 
--- TODO(3a412eaf-9f87-489f-9dd2-e8b0c5c81a0d): move commands to Snapshot
+-- TODO(3a412eaf-9f87-489f-9dd2-e8b0c5c81a0d): Introduce CommandProcessor typeclass
+--
+-- This type class will have applyCommand function. Both Database and
+-- Snapshot implement instances of the typeclass. applyCommand of
+-- Database will be implemented in terms of applyCommand of Snapshot.
+--
+-- Move CommandProcessor and Command to a separate module.
 data Command = AddEntity T.Text
              | AddEntityField T.Text T.Text FieldType
 
@@ -39,7 +45,6 @@ performCommand database command transformSnapshot =
     where snapshot = databaseSnapshot database
           log = databaseLog database
 
--- TODO(3a412eaf-9f87-489f-9dd2-e8b0c5c81a0d): move command dispatching to Snapshot
 applyCommand :: Database -> Command -> Either T.Text Database
 applyCommand database command@(AddEntity name) =
     performCommand database command (addEntity name)
