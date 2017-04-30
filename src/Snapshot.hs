@@ -19,6 +19,8 @@ data Snapshot = Snapshot { snapshotEntities :: [Entity]
                          , snapshotRecords :: [Record]
                          } deriving Show
 
+-- TODO(504793dd-de6c-444f-a28e-c825e76ba376): CommandProcessor instance for Snapshot
+
 emptySnapshot = Snapshot { snapshotEntities = []
                          , snapshotRecords = []
                          }
