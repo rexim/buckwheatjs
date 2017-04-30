@@ -30,6 +30,9 @@ instance CommandProcessor Database where
         where snapshot = databaseSnapshot database
               log = databaseLog database
 
+    selectRecords database selector =
+        selectRecords (databaseSnapshot database) selector
+
 emptyDatabase :: Database
 emptyDatabase = Database { databaseLog = []
                          , databaseSnapshot = emptySnapshot
@@ -42,10 +45,3 @@ loadDatabaseFromFile = undefined
 -- TODO(bb6f89fa-37a3-403c-82ff-32dd39985423): implement saveDatabaseToFile
 saveDatabaseToFile :: FilePath -> Database -> IO ()
 saveDatabaseToFile = undefined
-
--- TODO(5390068b-51f5-4c56-9d97-a8ae1be62721): implement selectRecords
---
--- I think this function should be a part of CommandProcessor or a
--- similar separate entity.
-selectRecords :: Database -> Selector -> [Record]
-selectRecords = undefined

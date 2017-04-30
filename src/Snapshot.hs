@@ -2,6 +2,7 @@ module Snapshot ( Snapshot
                 , Selector
                 , emptySnapshot
                 , applyCommand
+                , selectRecords
                 ) where
 
 import Data.List
@@ -24,6 +25,9 @@ instance CommandProcessor Snapshot where
         addRecord entity fields snapshot
     applyCommand snapshot command@(RemoveRecords selector) =
         removeRecords selector snapshot
+
+    -- TODO(cc4054ed-146f-4de0-ba49-9f5a4d40ca10): implement Snapshot.selectRecords
+    selectRecords snapshot selector = undefined
 
 emptySnapshot = Snapshot { snapshotEntities = []
                          , snapshotRecords = []
