@@ -1,9 +1,8 @@
 module Buckwheat ( emptyDatabase
-                 , applyCommand
                  , loadDatabaseFromFile
                  , saveDatabaseToFile
                  , selectRecords
-                 , Command(AddEntity)
+                 , applyCommand
                  ) where
 
 import qualified Data.Text as T
@@ -11,20 +10,7 @@ import qualified Data.Text as T
 import Entity
 import Record
 import Snapshot
-
--- TODO(3a412eaf-9f87-489f-9dd2-e8b0c5c81a0d): Introduce CommandProcessor typeclass
---
--- This type class will have applyCommand function. Both Database and
--- Snapshot implement instances of the typeclass. applyCommand of
--- Database will be implemented in terms of applyCommand of Snapshot.
---
--- Move CommandProcessor and Command to a separate module.
-data Command = AddEntity T.Text
-             | AddEntityField T.Text T.Text FieldType
-
-             | AddRecord T.Text [Field]
-             | RemoveRecords Selector
-               deriving Show
+import Command
 
 data Database = Database { databaseLog :: [Command]
                          , databaseSnapshot :: Snapshot
@@ -45,15 +31,18 @@ performCommand database command transformSnapshot =
     where snapshot = databaseSnapshot database
           log = databaseLog database
 
-applyCommand :: Database -> Command -> Either T.Text Database
-applyCommand database command@(AddEntity name) =
-    performCommand database command (addEntity name)
-applyCommand database command@(AddEntityField entity field fieldType) =
-    performCommand database command (addEntityField entity field fieldType)
-applyCommand database command@(AddRecord entity fields) =
-    performCommand database command (addRecord entity fields)
-applyCommand database command@(RemoveRecords selector) =
-    performCommand database command (removeRecords selector)
+-- TODO(6cde2176-acbf-4238-905c-d56c577c451f): implement Database applyCommand in terms of Snapshot's one
+--
+-- Requires 504793dd-de6c-444f-a28e-c825e76ba376
+instance CommandProcessor Database where
+    applyCommand database command@(AddEntity name) =
+        performCommand database command (addEntity name)
+    applyCommand database command@(AddEntityField entity field fieldType) =
+        performCommand database command (addEntityField entity field fieldType)
+    applyCommand database command@(AddRecord entity fields) =
+        performCommand database command (addRecord entity fields)
+    applyCommand database command@(RemoveRecords selector) =
+        performCommand database command (removeRecords selector)
 
 -- TODO(13b72fe4-dec4-48b8-ac4c-34d978450ae1): implement loadDatabaseFromFile
 loadDatabaseFromFile :: FilePath -> IO Database
