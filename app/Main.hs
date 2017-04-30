@@ -1,7 +1,7 @@
 module Main where
 
 import qualified Data.Text as T
-import Buckwheat
+import Database
 import Command
 
 main :: IO ()

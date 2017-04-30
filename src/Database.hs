@@ -1,9 +1,9 @@
-module Buckwheat ( emptyDatabase
-                 , loadDatabaseFromFile
-                 , saveDatabaseToFile
-                 , selectRecords
-                 , applyCommand
-                 ) where
+module Database ( emptyDatabase
+                , loadDatabaseFromFile
+                , saveDatabaseToFile
+                , selectRecords
+                , applyCommand
+                ) where
 
 import qualified Data.Text as T
 
@@ -12,7 +12,10 @@ import Record
 import Snapshot
 import Command
 
--- TODO(968c6262-aec5-4bf1-8bf8-957efcb74c90): rename module Buckwheat -> Database
+-- TODO(212b6432-4e00-4667-85c7-fc4e064698a3): Buckwheat prefix for all modules
+--
+-- I kinda plan this to be a library as well. And I think it's a good
+-- idea for a library to have such unique prefix for submodules.
 
 data Database = Database { databaseLog :: [Command]
                          , databaseSnapshot :: Snapshot
