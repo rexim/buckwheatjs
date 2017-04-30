@@ -44,5 +44,8 @@ saveDatabaseToFile :: FilePath -> Database -> IO ()
 saveDatabaseToFile = undefined
 
 -- TODO(5390068b-51f5-4c56-9d97-a8ae1be62721): implement selectRecords
+--
+-- I think this function should be a part of CommandProcessor or a
+-- similar separate entity.
 selectRecords :: Database -> Selector -> [Record]
 selectRecords = undefined
