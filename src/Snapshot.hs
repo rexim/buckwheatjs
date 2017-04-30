@@ -1,10 +1,7 @@
 module Snapshot ( Snapshot
                 , Selector
                 , emptySnapshot
-                , addEntity
-                , addEntityField
-                , addRecord
-                , removeRecords
+                , applyCommand
                 ) where
 
 import Data.List
@@ -12,14 +9,21 @@ import qualified Data.Text as T
 
 import Entity
 import Record
-
-data Selector = EntityIs T.Text deriving Show
+import Command
 
 data Snapshot = Snapshot { snapshotEntities :: [Entity]
                          , snapshotRecords :: [Record]
                          } deriving Show
 
--- TODO(504793dd-de6c-444f-a28e-c825e76ba376): CommandProcessor instance for Snapshot
+instance CommandProcessor Snapshot where
+    applyCommand snapshot command@(AddEntity name) =
+        addEntity name snapshot
+    applyCommand snapshot command@(AddEntityField entity field fieldType) =
+        addEntityField entity field fieldType snapshot
+    applyCommand snapshot command@(AddRecord entity fields) =
+        addRecord entity fields snapshot
+    applyCommand snapshot command@(RemoveRecords selector) =
+        removeRecords selector snapshot
 
 emptySnapshot = Snapshot { snapshotEntities = []
                          , snapshotRecords = []
